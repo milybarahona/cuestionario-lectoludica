@@ -364,6 +364,7 @@
     let patched = template
       .replace(originalState, patchedState)
       .replace(originalSubmit, reportLogic)
+      .replace('line-height:1.02;letter-spacing:-.02em', 'line-height:1.12;letter-spacing:-.02em')
       .replace('Descubre cómo detecta tu centro las <em style="font-style:italic;font-weight:500">dificultades lectoras</em>', 'Descubre en qué punto está tu colegio en <em style="font-style:italic;font-weight:500">lectoescritura</em>')
       .replace('>Recibir mi informe <span style="font-size:18px">→</span></button>', '>{{ submitLabel }} <span style="font-size:18px">→</span></button>')
       .replace('name, email, error, firstName:', 'name, email, error, submitLabel: this.state.submitting ? \'Generando informe…\' : \'Recibir mi informe\', firstName:');
