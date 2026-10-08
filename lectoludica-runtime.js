@@ -337,12 +337,19 @@
 
     this.setState({ error: '', submitting: true });
     try {
-      const response = await fetch('${WEBHOOK_URL}', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(this.getReportData())
+      const payload = this.getReportData();
+      const formData = new FormData();
+      Object.entries(payload).forEach(([key, value]) => {
+        const serialized = value != null && typeof value === 'object'
+          ? JSON.stringify(value)
+          : String(value ?? '');
+        formData.append(key, serialized);
       });
-      if (!response.ok) throw new Error('El webhook respondió con el estado ' + response.status);
+      await fetch('${WEBHOOK_URL}', {
+        method: 'POST',
+        mode: 'no-cors',
+        body: formData
+      });
       this.setState({ error: '', submitting: false, step: this.N + 2 });
     } catch (error) {
       console.error('No se pudo enviar el cuestionario:', error);
