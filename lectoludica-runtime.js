@@ -295,6 +295,8 @@
 
     return {
       ...placeholders,
+      EMAIL: email.trim(),
+      PRIMER_NOMBRE: name.trim().split(/\s+/)[0] || '',
       CONTACTO: {
         NOMBRE: name.trim(),
         EMAIL: email.trim(),
@@ -322,7 +324,7 @@
         MOSTRAR_PREGUNTA_3: explorationQuestions.length > 2
       },
       META: {
-        VERSION_REGLAS: '2026-10-08',
+        VERSION_REGLAS: '2026-10-09',
         ORIGEN: 'cuestionario-lectoludica',
         FECHA_ENVIO: new Date().toISOString()
       }
