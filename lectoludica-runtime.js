@@ -38,8 +38,16 @@
     };
 
     const stateFor = value => value == null ? 'Sin datos' : value <= 2 ? 'Inicial' : value === 3 ? 'En marcha' : 'Consolidado';
-    const pointFor = value => value == null ? '⚪' : value <= 2 ? '🔴' : value === 3 ? '🟡' : '🟢';
     const colorFor = value => value == null ? 'GRIS' : value <= 2 ? 'ROJO' : value === 3 ? 'AMARILLO' : 'VERDE';
+    const pointFieldsFor = (area, value) => {
+      const activeColor = colorFor(value);
+      return Object.fromEntries(
+        ['ROJO', 'AMARILLO', 'VERDE', 'GRIS'].map(color => [
+          'PUNTO_' + area + '_' + color,
+          activeColor === color ? '●' : ''
+        ])
+      );
+    };
 
     const concernTexts = [
       'los resultados en las evaluaciones externas',
@@ -263,22 +271,22 @@
       FORTALEZA_2: strengths[1] || '',
       CIERRE_FORTALEZAS: strengths.length ? 'Es una base desde la que construir, no desde la que empezar.' : '',
       ANALISIS_FORMACION_AULA: mapText('formacion', 1),
-      PUNTO_FORMACION: pointFor(scores.formacion),
+      ...pointFieldsFor('FORMACION', scores.formacion),
       ESTADO_FORMACION: stateFor(scores.formacion),
       ANALISIS_CRITERIOS_COMUNES: mapText('criterios', 2),
-      PUNTO_CRITERIOS: pointFor(scores.criterios),
+      ...pointFieldsFor('CRITERIOS', scores.criterios),
       ESTADO_CRITERIOS: stateFor(scores.criterios),
       ANALISIS_RITMO_ALFABETIZACION: mapText('ritmo', 3),
-      PUNTO_RITMO: pointFor(scores.ritmo),
+      ...pointFieldsFor('RITMO', scores.ritmo),
       ESTADO_RITMO: stateFor(scores.ritmo),
       ANALISIS_DATOS_PARA_DECIDIR: mapText('datos', 4),
-      PUNTO_DATOS: pointFor(scores.datos),
+      ...pointFieldsFor('DATOS', scores.datos),
       ESTADO_DATOS: stateFor(scores.datos),
       ANALISIS_DETECCION_TEMPRANA: mapText('deteccion', 5),
-      PUNTO_DETECCION: pointFor(scores.deteccion),
+      ...pointFieldsFor('DETECCION', scores.deteccion),
       ESTADO_DETECCION: stateFor(scores.deteccion),
       ANALISIS_CONTINUIDAD_ENTRE_ETAPAS: mapText('continuidad', 6),
-      PUNTO_TRANSICION: pointFor(scores.continuidad),
+      ...pointFieldsFor('TRANSICION', scores.continuidad),
       ESTADO_TRANSICION: stateFor(scores.continuidad),
       HALLAZGO_INTEGRADO_1: crosses[0] ? crosses[0].text : '',
       HALLAZGO_INTEGRADO_2: crosses[1] ? crosses[1].text : '',
