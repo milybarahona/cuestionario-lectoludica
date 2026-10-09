@@ -37,7 +37,7 @@
       continuidad: score(6)
     };
 
-    const stateFor = value => value == null ? 'Sin datos' : value <= 2 ? 'Inicial' : value === 3 ? 'En marcha' : 'Consolidado';
+    const stateFor = value => value == null ? '⚪ Sin datos' : value <= 2 ? '🔴 Inicial' : value === 3 ? '🟡 En marcha' : '🟢 Consolidado';
     const colorFor = value => value == null ? 'GRIS' : value <= 2 ? 'ROJO' : value === 3 ? 'AMARILLO' : 'VERDE';
 
     const concernTexts = [
