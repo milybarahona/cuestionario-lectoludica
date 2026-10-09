@@ -93,6 +93,14 @@
           ? 'Las dificultades se detectan a tiempo y se sabe qué habilidad trabajar.'
           : 'Vuestro equipo detecta las dificultades a tiempo, ya en Infantil, y las deriva para valorarlas.'
         : strengthTexts[area]);
+    const strengthFallbacks = [
+      'El equipo ha dado un primer paso importante: poner la lectoescritura en común y hacer visible lo que todavía necesita aclararse.',
+      'Las respuestas permiten señalar preguntas concretas para avanzar sin añadir acciones desconectadas.'
+    ];
+    const displayedStrengths = [...strengths];
+    strengthFallbacks.forEach(text => {
+      if (displayedStrengths.length < 2) displayedStrengths.push(text);
+    });
 
     const noDataText = 'Sin datos. Es un área que conviene mirar con el equipo.';
     const mapTexts = {
@@ -225,7 +233,9 @@
       base_solida: {
         title: 'Sostener una base sólida',
         description: 'Vuestra base es sólida. El reto ahora está en sostenerla cuando cambian los equipos y en afinar la mirada sobre los niños que no avanzan al ritmo del grupo.',
-        foundation: '', students: '', center: ''
+        foundation: 'La clave no es introducir un método nuevo, sino proteger los acuerdos, documentarlos y revisarlos con datos comunes.',
+        students: 'El alumnado recibe un recorrido coherente y los apoyos pueden ajustarse antes cuando alguien necesita más tiempo.',
+        center: 'El centro puede concentrarse en sostener los acuerdos, acompañar a las nuevas incorporaciones y afinar el seguimiento.'
       }
     };
     priorities.deteccion = scores.deteccion === 1 ? {
@@ -261,15 +271,47 @@
       .map(area => questionByArea[area])
       .filter(Boolean)
       .slice(0, 3);
-    if (explorationQuestions.length < 2) explorationQuestions.push('¿Qué de este informe te reconoces y qué no?');
+    const fallbackQuestions = [
+      '¿Qué de esta lectura reconoce el equipo y qué habría que matizar?',
+      '¿Qué acuerdo concreto tendría más impacto si se sostuviera en todas las aulas?',
+      '¿Qué información necesitáis recoger para saber si el cambio está funcionando?'
+    ];
+    fallbackQuestions.forEach(question => {
+      if (explorationQuestions.length < 3 && !explorationQuestions.includes(question)) {
+        explorationQuestions.push(question);
+      }
+    });
+
+    const levelFinding = allConsolidated
+      ? 'Las respuestas dibujan un recorrido coherente de Infantil a Primaria, con acuerdos, seguimiento y capacidad de detección.'
+      : average == null
+        ? 'Antes de interpretar el proceso, conviene reunir la información que hoy está dispersa entre aulas y etapas.'
+        : average <= 2
+          ? 'Las respuestas muestran que las dificultades no se concentran en una sola área: formación, criterios, seguimiento y continuidad necesitan ordenarse como un recorrido común.'
+          : average < 3.5
+            ? 'El centro ya tiene algunos apoyos sobre los que construir, pero todavía falta convertirlos en acuerdos que se sostengan entre aulas y etapas.'
+            : 'La base está consolidada en la mayoría de las áreas; el reto consiste en conectar esa solidez con el punto concreto que rompe el recorrido.';
+    const findingFallbacks = [
+      levelFinding,
+      'El mapa señala dónde conviene concentrar la conversación del equipo: no para añadir más acciones, sino para alinear las que ya existen.',
+      'La prioridad propuesta debe contrastarse con el claustro para comprobar si refleja la práctica cotidiana y decidir el siguiente paso.'
+    ];
+    const integratedFindings = crosses.map(cross => cross.text);
+    findingFallbacks.forEach(text => {
+      if (integratedFindings.length < 3 && !integratedFindings.includes(text)) {
+        integratedFindings.push(text);
+      }
+    });
 
     const placeholders = {
       NOMBRE_CENTRO: (vals.centro || '').trim(),
       PREOCUPACION_PRINCIPAL: concern,
       RESUMEN_SITUACION_CENTRO: globalSummary,
-      FORTALEZA_1: strengths[0] || '',
-      FORTALEZA_2: strengths[1] || '',
-      CIERRE_FORTALEZAS: strengths.length ? 'Es una base desde la que construir, no desde la que empezar.' : '',
+      FORTALEZA_1: displayedStrengths[0],
+      FORTALEZA_2: displayedStrengths[1],
+      CIERRE_FORTALEZAS: strengths.length
+        ? 'Es una base desde la que construir, no desde la que empezar.'
+        : 'Es un punto de partida desde el que ordenar prioridades y tomar decisiones comunes.',
       ANALISIS_FORMACION_AULA: mapText('formacion', 1),
       ...pointFieldsFor('FORMACION', scores.formacion),
       ESTADO_FORMACION: stateFor(scores.formacion),
@@ -288,17 +330,17 @@
       ANALISIS_CONTINUIDAD_ENTRE_ETAPAS: mapText('continuidad', 6),
       ...pointFieldsFor('TRANSICION', scores.continuidad),
       ESTADO_TRANSICION: stateFor(scores.continuidad),
-      HALLAZGO_INTEGRADO_1: crosses[0] ? crosses[0].text : '',
-      HALLAZGO_INTEGRADO_2: crosses[1] ? crosses[1].text : '',
-      HALLAZGO_INTEGRADO_3: crosses[2] ? crosses[2].text : '',
+      HALLAZGO_INTEGRADO_1: integratedFindings[0],
+      HALLAZGO_INTEGRADO_2: integratedFindings[1],
+      HALLAZGO_INTEGRADO_3: integratedFindings[2],
       TITULO_PRIORIDAD: priority.title,
       DESCRIPCION_PRIORIDAD: priority.description,
       FUNDAMENTO_PRIORIDAD: priority.foundation,
       IMPACTO_PRIORIDAD_ALUMNADO: priority.students,
       IMPACTO_PRIORIDAD_CENTRO: priority.center,
-      PREGUNTA_EXPLORACION_1: explorationQuestions[0] || '',
-      PREGUNTA_EXPLORACION_2: explorationQuestions[1] || '',
-      PREGUNTA_EXPLORACION_3: explorationQuestions[2] || '',
+      PREGUNTA_EXPLORACION_1: explorationQuestions[0],
+      PREGUNTA_EXPLORACION_2: explorationQuestions[1],
+      PREGUNTA_EXPLORACION_3: explorationQuestions[2],
       RESPUESTA_PREOCUPACION_PRINCIPAL: answerText(0),
       RESPUESTA_FORMACION_CLAUSTRO: answerText(1),
       RESPUESTA_CRITERIOS_NUEVO_DOCENTE: answerText(2),
