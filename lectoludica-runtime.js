@@ -27,13 +27,20 @@
       const selected = answerIndex(questionIndex);
       return selected >= 0 && selected <= 3 ? selected + 1 : null;
     };
+    const detectionScore = () => {
+      const selected = answerIndex(5);
+      if (selected === 0) return 1;
+      if (selected === 1 || selected === 2) return 3;
+      if (selected === 3) return 4;
+      return null;
+    };
 
     const scores = {
       formacion: score(1),
       criterios: score(2),
       ritmo: score(3),
       datos: score(4),
-      deteccion: score(5),
+      deteccion: detectionScore(),
       continuidad: score(6)
     };
 
@@ -88,11 +95,15 @@
       .filter(area => scores[area] >= 3)
       .sort((a, b) => scores[b] - scores[a] || strengthOrder.indexOf(a) - strengthOrder.indexOf(b))
       .slice(0, 2)
-      .map(area => area === 'deteccion'
-        ? scores.deteccion === 4
-          ? 'Las dificultades se detectan a tiempo y se sabe qué habilidad trabajar.'
-          : 'Vuestro equipo detecta las dificultades a tiempo, ya en Infantil, y las deriva para valorarlas.'
-        : strengthTexts[area]);
+      .map(area => {
+        if (area !== 'deteccion') return strengthTexts[area];
+        if (scores.deteccion === 4) {
+          return 'Las dificultades se detectan a tiempo y se sabe qué habilidad trabajar.';
+        }
+        return answerIndex(5) === 1
+          ? 'Vuestro equipo detecta las dificultades a tiempo, ya en Infantil. Esa detección temprana es una base valiosa, aunque todavía falte una mirada común.'
+          : 'Vuestro equipo detecta las dificultades a tiempo, ya en Infantil, y las deriva para valorarlas.';
+      });
     const strengthFallbacks = [
       'El equipo ha dado un primer paso importante: poner la lectoescritura en común y hacer visible lo que todavía necesita aclararse.',
       'Las respuestas permiten señalar preguntas concretas para avanzar sin añadir acciones desconectadas.'
@@ -173,7 +184,7 @@
       'La formación llegó, pero no se tradujo en acuerdos. El conocimiento ya está en el claustro; lo que falta es convertirlo en decisiones comunes.', ['formacion', 'criterios']);
     addCross(scores.criterios === 2 && scores.continuidad != null && scores.continuidad <= 3,
       'El libro ordena cada curso, pero no garantiza la continuidad. Si Infantil y Primaria trabajan con materiales de lógicas distintas, el recorrido se rompe en el paso de etapa.', ['criterios', 'continuidad']);
-    addCross(scores.deteccion === 2 && scores.datos != null && scores.datos <= 2,
+    addCross(answerIndex(5) === 1 && scores.datos != null && scores.datos <= 2,
       'Vuestro equipo ve cosas, pero no las registra con una referencia común: la información existe, pero se queda en cada aula y no llega a las decisiones del centro.', ['deteccion', 'datos']);
     addCross(scores.ritmo === 4 && scores.continuidad != null && scores.continuidad <= 2,
       'Hay una mirada de proceso, pero se rompe en el paso a 1º: lo que Infantil cuida, Primaria no siempre lo recoge.', ['ritmo', 'continuidad']);
