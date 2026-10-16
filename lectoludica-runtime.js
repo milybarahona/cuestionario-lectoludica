@@ -1,7 +1,7 @@
 (function () {
   'use strict';
 
-  const WEBHOOK_URL = 'https://hook.eu2.make.com/kjdecrlfkbs9wc896hljt8ss6ippki53';
+  const WEBHOOK_URL = 'https://hook.eu2.make.com/p5iogt3owpam91qib0krdxxt0wc9g4jl';
 
   const originalState = "  state = { step: 0, answers: {}, other: '', vals: {}, name: '', email: '', error: '' };";
   const patchedState = "  state = { step: 0, answers: {}, other: '', vals: {}, name: '', email: '', error: '', submitting: false };";
