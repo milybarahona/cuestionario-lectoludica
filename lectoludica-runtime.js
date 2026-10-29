@@ -135,10 +135,10 @@
     let globalSummary = 'No hay información suficiente para situar el punto de partida del centro. Las respuestas que faltan son, precisamente, las primeras áreas que conviene mirar con el equipo.';
     if (average != null && average <= 2) {
       globalLevel = 'Etapa inicial';
-      globalSummary = 'Vuestro centro se encuentra en una etapa inicial. Hay prácticas valiosas, pero todavía no forman un recorrido común y estable de Infantil a Primaria.';
+      globalSummary = 'Vuestro centro se encuentra en una etapa inicial. Hay prácticas valiosas, pero todavía no forman un recorrido estable de Infantil a Primaria.';
     } else if (average != null && average < 3.5) {
       globalLevel = 'Etapa de transición';
-      globalSummary = 'Vuestro centro se encuentra en etapa de transición. Hay acuerdos y buena voluntad, pero el proceso de alfabetización todavía se sostiene en las personas, más que en un recorrido común de Infantil a Primaria.';
+      globalSummary = 'Vuestro centro se encuentra en etapa de transición. Hay acuerdos y buena voluntad, pero el proceso de alfabetización todavía depende de las personas más que de un recorrido pensado de Infantil a Primaria.';
     } else if (average != null) {
       globalLevel = 'Base sólida';
       globalSummary = 'Vuestro centro cuenta con una base sólida. El reto está en sostenerla cuando cambian los equipos y en afinar la respuesta para los niños y niñas que no avanzan al ritmo del grupo.';
@@ -146,10 +146,10 @@
 
     const strengthOrder = ['deteccion', 'formacion', 'criterios', 'ritmo', 'datos', 'continuidad'];
     const strengthTexts = {
-      formacion: 'El claustro ha compartido una formación común: tenéis un punto de partida compartido.',
+      formacion: 'Todo el claustro ha pasado por la misma formación en lectoescritura: tenéis un punto de partida para construir.',
       criterios: 'Ya existen acuerdos sobre qué enseñar y en qué orden.',
       ritmo: 'La expectativa sobre cuándo deben leer da tiempo a consolidar las bases.',
-      datos: 'El centro tiene un dato común sobre cómo leen sus alumnos al terminar 1º.',
+      datos: 'El centro sabe cómo leen sus alumnos al terminar 1º, con una prueba igual para todos.',
       continuidad: 'Lo trabajado en Infantil se retoma en 1º.'
     };
     const strengths = strengthOrder
@@ -162,7 +162,7 @@
           return 'Las dificultades se detectan a tiempo y se sabe qué habilidad trabajar.';
         }
         return answerIndex('deteccion') === 1
-          ? 'Vuestro equipo detecta las dificultades a tiempo, ya en Infantil. Esa detección temprana es una base valiosa, aunque todavía falte una mirada común.'
+          ? 'Vuestro equipo detecta las dificultades a tiempo, ya en Infantil. Esa detección temprana es una base valiosa.'
           : 'Vuestro equipo detecta las dificultades a tiempo, ya en Infantil, y las deriva para valorarlas.';
       });
     const strengthFallbacks = [
@@ -177,15 +177,15 @@
     const noDataText = 'Sin datos. Es un área que conviene mirar con el equipo.';
     const mapTexts = {
       formacion: [
-        'En los últimos cursos no ha habido formación común: cada docente enseña con lo que trae de su formación inicial y su experiencia.',
+        'En los últimos cursos el claustro no ha tenido formación en lectoescritura. Cada docente enseña desde su formación inicial y su experiencia.',
         'El equipo se forma, pero por caminos distintos: conviven enfoques que no siempre se hablan entre sí.',
-        'Hubo formación común, pero su aplicación quedó en manos de cada docente. Sin acuerdos ni acompañamiento, lo aprendido suele diluirse en pocos meses.',
-        'La formación común tuvo acompañamiento o revisión en el aula: es una base valiosa para sostener los cambios.',
+        'Todo el claustro se formó en lectoescritura y después cada docente lo aplicó a su manera. Lo que cambió en cada aula todavía no se ha recogido como práctica del centro.',
+        'Tras la formación del claustro, alguien acompañó o revisó su aplicación en el aula: es una base valiosa para sostener los cambios.',
         noDataText
       ],
       criterios: [
         'El orden de enseñanza depende de cada docente: un mismo niño puede vivir tres secuencias distintas en tres cursos.',
-        'El orden lo marca la editorial. Da estructura, pero el libro no conoce a vuestro alumnado, y Infantil y Primaria suelen trabajar con materiales de lógicas distintas.',
+        'Quien llega nuevo se orienta por el libro de la editorial. Le da un orden para su curso, pero no le cuenta qué se trabajó antes ni cómo enseña el resto del equipo.',
         'Cada etapa tiene su orden, pero el recorrido se corta en el paso de una a otra.',
         'Hay criterios comunes de Infantil a Primaria que todo el equipo conoce: es el pilar de un proyecto de centro.',
         noDataText
@@ -199,14 +199,14 @@
       ],
       datos: [
         'No hay un dato de cuántos alumnos terminan 1º leyendo: las decisiones se toman sin conocer el tamaño real del reto.',
-        'El progreso se estima con notas e impresiones: información valiosa, pero no comparable entre aulas.',
-        'Hay un dato común, pero llega a final de curso, cuando ya no da tiempo a actuar con ese grupo.',
-        'Hay seguimiento durante el curso con una referencia común: el centro puede actuar a tiempo.',
+        'El avance lector se conoce por las notas y las impresiones de cada aula. Con esa información cuesta comparar grupos o decidir a quién reforzar primero.',
+        'Hay una prueba de final de curso, pero el dato llega cuando ya no da tiempo a actuar con ese grupo.',
+        'El avance lector se sigue durante el curso, no solo al final, y eso permite actuar a tiempo.',
         noDataText
       ],
       deteccion: [
         'Las dificultades se ven cuando el niño ya va por detrás. A esas alturas, recuperar cuesta más y la familia suele llegar preocupada.',
-        'Las dificultades se ven a tiempo, ya en Infantil, y eso es una fortaleza. Lo que falta es una mirada común: hoy depende de cómo observa cada tutor o tutora.',
+        'Las dificultades se ven ya en Infantil, y eso es una fortaleza. Qué se considera una señal de alerta varía de un aula a otra.',
         'Las dificultades se ven a tiempo y se derivan, pero sin saber qué habilidad trabajar en el aula: el apoyo tiende a ser genérico.',
         'Se detecta a tiempo y con precisión: se sabe qué habilidad trabajar.',
         noDataText
@@ -214,8 +214,8 @@
       continuidad: [
         '1º arranca con un repaso general marcado por el libro y pasa a la ficha: el punto de partida no se ajusta a lo que domina cada niño.',
         'Se retoma lo trabajado en Infantil, pero cada docente decide cuánto y cómo: la continuidad depende de quién reciba al grupo.',
-        'Infantil comparte información del grupo y 1º la tiene en cuenta, aunque todavía falta un lenguaje común entre etapas.',
-        '1º parte de lo que domina cada niño, con información individual y un lenguaje compartido con Infantil.',
+        'Infantil comparte información del grupo y 1º la tiene en cuenta, aunque una misma expresión, como «ya lee», puede significar cosas distintas en cada etapa.',
+        '1º parte de lo que domina cada niño, con información individual de Infantil y las mismas palabras para describir su avance.',
         noDataText
       ]
     };
@@ -227,31 +227,31 @@
     };
     const p1 = answerIndex('preocupacion');
     addCross(p1 === 4 && scores.criterios != null && scores.criterios <= 3,
-      'Tu preocupación tiene una explicación en tus propias respuestas: no hay criterios comunes para alfabetizar de Infantil a Primaria. Mientras eso no exista, cada aula seguirá funcionando a su manera, por mucho compromiso que tenga el equipo.', ['criterios']);
+      'Lo que os preocupa se explica en vuestras propias respuestas: todavía no hay criterios para alfabetizar que vayan de Infantil a Primaria. Mientras falten, cada aula seguirá a su manera, por mucho compromiso que tenga el equipo.', ['criterios']);
     addCross(p1 === 3 && scores.ritmo != null && scores.ritmo <= 2,
-      'Parte de los niños que "no avanzan" puede estar respondiendo a un ritmo exigido, no a una dificultad. Cuando la expectativa llega pronto, quien necesita algo más de tiempo parece ir por detrás.', ['ritmo']);
+      'Parte de los niños que «no avanzan» quizá solo necesita más tiempo del que marca el calendario. Cuando la expectativa llega pronto, quien va a otro ritmo parece ir por detrás.', ['ritmo']);
     addCross(p1 === 0 && scores.datos != null && scores.datos <= 2,
       'Os preocupan los resultados externos, pero el centro no tiene un dato propio que los anticipe: el problema se descubre cuando llega la prueba, y no antes.', ['datos']);
     addCross(p1 === 1 && scores.datos != null && scores.datos <= 2,
-      'Sin un dato común, cada tutor o tutora responde a las familias desde su propia mirada. Mensajes distintos ante la misma preocupación generan dudas, y a veces desconfianza.', ['datos']);
+      'Cuando una familia pregunta cómo va su hijo, la respuesta se apoya en la impresión de quien le da clase. Dos familias con la misma duda pueden escuchar mensajes distintos, y eso alimenta la desconfianza.', ['datos']);
     addCross(p1 === 2 && scores.formacion != null && scores.formacion >= 3,
-      'El equipo ya se ha formado. Lo que pide quizá no es más formación, sino acompañamiento para llevar lo aprendido al aula.', ['formacion']);
+      'El equipo ya se ha formado. Antes de sumar otro curso, vale la pena ver qué ayuda necesita para llevar lo aprendido al aula.', ['formacion']);
 
     addCross(scores.ritmo != null && scores.ritmo <= 2 && scores.deteccion != null && scores.deteccion <= 2,
-      'Cuando se espera que lean pronto y la detección no parte de una mirada compartida, es difícil distinguir a un niño con una dificultad real de uno que todavía no ha llegado al ritmo exigido. El riesgo es doble: derivar casos que no lo necesitan y no ver a tiempo los que sí.', ['ritmo', 'deteccion']);
+      'Cuando se espera que lean pronto y cada aula observa con sus propias señales, cuesta distinguir una dificultad real de un ritmo distinto. El riesgo es doble: derivar casos que no lo necesitan y no ver a tiempo los que sí.', ['ritmo', 'deteccion']);
     addCross(scores.ritmo != null && scores.ritmo <= 2 && scores.continuidad != null && scores.continuidad <= 3,
-      'Infantil adelanta y 1º no retoma con un lenguaje común: el niño vive dos ritmos que no se hablan. Lo que se aprendió deprisa no siempre está consolidado, y 1º no siempre lo sabe.', ['ritmo', 'continuidad']);
+      'Infantil adelanta y 1º arranca por su cuenta: el niño vive dos ritmos que no se hablan. Lo aprendido deprisa no siempre está consolidado, y 1º no siempre lo sabe.', ['ritmo', 'continuidad']);
     addCross(scores.formacion === 3 && scores.criterios != null && scores.criterios <= 3,
-      'La formación llegó, pero no se tradujo en acuerdos. El conocimiento ya está en el claustro; lo que falta es convertirlo en decisiones comunes.', ['formacion', 'criterios']);
+      'La formación llegó al claustro, pero no se convirtió en acuerdos de aula. Lo aprendido existe en el equipo y todavía no ha cambiado lo que se hace cada día.', ['formacion', 'criterios']);
     addCross(scores.criterios === 2 && scores.continuidad != null && scores.continuidad <= 3,
       'El libro ordena cada curso, pero no garantiza la continuidad. Si Infantil y Primaria trabajan con materiales de lógicas distintas, el recorrido se rompe en el paso de etapa.', ['criterios', 'continuidad']);
     addCross(answerIndex('deteccion') === 1 && scores.datos != null && scores.datos <= 2,
-      'Vuestro equipo ve cosas, pero no las registra con una referencia común: la información existe, pero se queda en cada aula y no llega a las decisiones del centro.', ['deteccion', 'datos']);
+      'Vuestro equipo ve cosas, pero lo que observa no queda registrado: la información se queda en cada aula y no llega a las decisiones del centro.', ['deteccion', 'datos']);
     addCross(scores.ritmo === 4 && scores.continuidad != null && scores.continuidad <= 2,
       'Hay una mirada de proceso, pero se rompe en el paso a 1º: lo que Infantil cuida, Primaria no siempre lo recoge.', ['ritmo', 'continuidad']);
     const noDataCount = Object.values(scores).filter(value => value == null).length;
     addCross(noDataCount >= 3,
-      'Lo más significativo de este informe es lo que no se sabe. No es un fallo de quien responde: indica que la información sobre la alfabetización no circula hasta el equipo directivo.', ['pocos_datos']);
+      'Lo más significativo de este informe es lo que no se sabe. Suele indicar que la información sobre la alfabetización no circula hasta el equipo directivo.', ['pocos_datos']);
 
     const priorityOrder = ['criterios', 'ritmo', 'deteccion', 'continuidad', 'datos', 'formacion'];
     const allConsolidated = Object.values(scores).every(value => value === 4);
@@ -283,14 +283,14 @@
       },
       datos: {
         title: 'Datos para decidir',
-        description: 'Sin un dato común, el centro decide a ciegas.',
+        description: 'Sin un dato que se pueda comparar, el centro decide a ciegas.',
         foundation: 'El dato permite saber si algo funciona y dónde poner los apoyos.',
         students: 'Los apoyos llegan cuando la dificultad ya es evidente.',
         center: 'Sorpresas en las evaluaciones externas y respuestas distintas ante las mismas preguntas de las familias.'
       },
       formacion: {
         title: 'Formación que llega al aula',
-        description: 'Formar no basta si lo aprendido no se convierte en práctica común.',
+        description: 'Formar no basta si lo aprendido no se convierte en práctica de aula.',
         foundation: 'La formación es la inversión que debería mover todo lo demás.',
         students: 'Experiencias distintas según el aula que les toque.',
         center: 'Tiempo y dinero invertidos con poco cambio visible, y un equipo que empieza a vivir cada formación como "una más".'
@@ -365,7 +365,7 @@
             : 'La base está consolidada en la mayoría de las áreas; el reto consiste en conectar esa solidez con el punto concreto que rompe el recorrido.';
     const findingFallbacks = [
       levelFinding,
-      'El mapa señala dónde conviene concentrar la conversación del equipo: no para añadir más acciones, sino para alinear las que ya existen.',
+      'El mapa señala dónde concentrar la conversación del equipo y qué acciones de las que ya existen conviene alinear.',
       'La prioridad propuesta debe contrastarse con el claustro para comprobar si refleja la práctica cotidiana y decidir el siguiente paso.'
     ];
     const integratedFindings = crosses.map(cross => cross.text);
@@ -382,8 +382,8 @@
       FORTALEZA_1: displayedStrengths[0],
       FORTALEZA_2: displayedStrengths[1],
       CIERRE_FORTALEZAS: strengths.length
-        ? 'Es una base desde la que construir, no desde la que empezar.'
-        : 'Es un punto de partida desde el que ordenar prioridades y tomar decisiones comunes.',
+        ? 'Sobre esto se puede construir sin empezar de cero.'
+        : 'Es un punto de partida desde el que ordenar prioridades y tomar decisiones como equipo.',
       ANALISIS_FORMACION_AULA: mapText('formacion', 'formacion'),
       ...pointFieldsFor('FORMACION', scores.formacion),
       ESTADO_FORMACION: stateFor(scores.formacion),
@@ -456,7 +456,7 @@
         MOSTRAR_PREGUNTA_3: explorationQuestions.length > 2
       },
       META: {
-        VERSION_REGLAS: '2026-10-28',
+        VERSION_REGLAS: '2026-10-29',
         ORIGEN: 'cuestionario-lectoludica',
         FECHA_ENVIO: new Date().toISOString()
       }
