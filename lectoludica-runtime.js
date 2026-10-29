@@ -166,7 +166,7 @@
           : 'Vuestro equipo detecta las dificultades a tiempo, ya en Infantil, y las deriva para valorarlas.';
       });
     const strengthFallbacks = [
-      'El equipo ha dado un primer paso importante: poner la lectoescritura en común y hacer visible lo que todavía necesita aclararse.',
+      'Tenéis identificado qué os preocupa en lectoescritura, y eso permite decidir por dónde empezar a trabajar.',
       'Las respuestas permiten señalar preguntas concretas para avanzar sin añadir acciones desconectadas.'
     ];
     const displayedStrengths = [...strengths];
