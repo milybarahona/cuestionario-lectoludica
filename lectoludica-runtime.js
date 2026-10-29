@@ -13,22 +13,84 @@
     this.setState({ error: '', step: this.N + 2 });
   };`;
 
+  const questionsLogic = String.raw`  get questions() { return [
+    { id: 'preocupacion', text: '¿Qué es lo que más te preocupa hoy en lectoescritura?', hint: 'Elige una.', options: [
+      'Los resultados en las evaluaciones externas.',
+      'Las familias: dudas, quejas o presión.',
+      'Que el profesorado pide más herramientas y formación.',
+      'Niños y niñas que no avanzan y no tenemos claro por qué.',
+      'Que cada aula o cada etapa trabaja de forma distinta.'] },
+    { id: 'formacion', text: '¿Cómo ha sido la formación en lectoescritura del claustro en los últimos cursos?', options: [
+      'No ha habido formación de lectoescritura.',
+      'Cada docente se forma por su cuenta, y no siempre en lo mismo.',
+      'Formación para todo el claustro, y luego cada docente la aplicó como pudo.',
+      'Formación para todo el claustro, y luego alguien acompañó o revisó cómo se aplicaba en el aula.',
+      'No lo sé.'] },
+    { id: 'criterios', text: 'Cuando llega un docente nuevo a vuestro centro, ¿cómo sabe qué tiene que enseñar en lectoescritura y en qué orden?', options: [
+      'Lo decide según su experiencia.',
+      'Sigue el libro o el método de la editorial.',
+      'Tenemos acuerdos por etapa (Infantil por un lado y Primaria por otro).',
+      'Hay un documento o una secuencia común, de Infantil a Primaria, que todo el equipo conoce y usa.',
+      'No lo sé.'] },
+    { id: 'ritmo', text: '¿En qué momento se espera en vuestro centro que un niño o niña lea de forma autónoma?', options: [
+      'Al terminar Infantil.',
+      'A mitad de 1º.',
+      'Al terminar 1º.',
+      'Depende de cada niño o niña, a lo largo del primer ciclo.',
+      'No lo sé.'] },
+    { id: 'infantil_5', text: 'En Infantil 5, ¿en qué se centra sobre todo el trabajo de lectoescritura?', options: [
+      'En conocer las letras y su trazo, con fichas.',
+      'En empezar a leer y escribir palabras.',
+      'En el lenguaje oral y el juego con los sonidos, antes de las letras.',
+      'En una secuencia planificada que va de los sonidos a las letras y a la lectura.',
+      'No lo sé.'] },
+    { id: 'continuidad', text: 'Al empezar 1º, ¿desde dónde se arranca en lectoescritura?', options: [
+      'Desde el principio del libro de 1º: repaso general para todo el grupo y paso a la ficha y el libro.',
+      'Lo trabajado en Infantil se retoma, pero cada docente decide cuánto y cómo desde su experiencia: la continuidad depende de quién reciba al grupo.',
+      'La tutora de Infantil pasa información del grupo y 1º la tiene en cuenta, pero sin un lenguaje común entre etapas.',
+      'Se parte de lo que domina cada niño, con información individual de Infantil y el mismo lenguaje en las dos etapas.',
+      'No lo sé.'] },
+    { id: 'deteccion', text: 'Piensa en el último niño o niña con dificultades para leer que habéis detectado. ¿Cuándo se notó y qué se sabía de su dificultad?', options: [
+      'Se notó en 1º o 2º de Primaria, cuando ya iba por detrás del grupo.',
+      'Se notó en Infantil, pero cada tutor o tutora observa a su manera: no hay una mirada común en el equipo.',
+      'Se notó en Infantil y se derivó a orientación, pero no se supo qué habilidad trabajar en el aula.',
+      'Se notó en Infantil con una mirada común del equipo, y se supo qué habilidad concreta trabajar.',
+      'No ha habido ningún caso o no lo sé.'] },
+    { id: 'datos', text: 'Al terminar 1º, ¿sabéis qué porcentaje del alumnado lee de forma autónoma (palabras y frases sencillas, con precisión)?', options: [
+      'No tenemos ese dato.',
+      'Lo estimamos por las notas o la impresión de cada tutor o tutora.',
+      'Sí, con una prueba común a final de curso.',
+      'Sí, y además hacemos seguimiento durante el curso con una referencia común.',
+      'No lo sé.'] },
+    { id: 'mejora', text: 'Si este curso pudierais mejorar algo en lectoescritura, ¿qué os ayudaría más?', options: [
+      'Formación para el claustro.',
+      'Material de referencia común.',
+      'Acompañamiento en el aula.',
+      'Herramientas para detectar a tiempo.'] },
+    { id: 'plan_formacion', text: '¿La lectoescritura está en el plan de formación del centro para este curso?', options: [
+      'No.',
+      'Se está valorando.',
+      'Sí, pero sin concretar.',
+      'Sí, ya está planificada.'] }
+  ]; }
+`;
+
   const reportLogic = String.raw`  getReportData = () => {
     const { answers, other, vals, name, email } = this.state;
-    const answerIndex = questionIndex => answers[questionIndex];
-    const answerText = questionIndex => {
-      const question = this.questions[questionIndex];
-      const selected = answerIndex(questionIndex);
+    const questionIndexes = Object.fromEntries(this.questions.map((question, index) => [question.id, index]));
+    const answerIndex = questionId => answers[questionIndexes[questionId]];
+    const answerText = questionId => {
+      const question = this.questions[questionIndexes[questionId]];
+      const selected = answerIndex(questionId);
       if (!question || selected == null) return '';
-      if (questionIndex === 0 && selected === question.otherIdx && other.trim()) return other.trim();
       return question.options[selected] || '';
     };
-    const score = questionIndex => {
-      const selected = answerIndex(questionIndex);
+    const score = questionId => {
+      const selected = answerIndex(questionId);
       return selected >= 0 && selected <= 3 ? selected + 1 : null;
     };
     const detectionScore = () => {
-      const selected = answerIndex(5);
+      const selected = answerIndex('deteccion');
       if (selected === 0) return 1;
       if (selected === 1 || selected === 2) return 3;
       if (selected === 3) return 4;
@@ -36,12 +98,12 @@
     };
 
     const scores = {
-      formacion: score(1),
-      criterios: score(2),
-      ritmo: score(3),
-      datos: score(4),
+      formacion: score('formacion'),
+      criterios: score('criterios'),
+      ritmo: score('ritmo'),
+      datos: score('datos'),
       deteccion: detectionScore(),
-      continuidad: score(6)
+      continuidad: score('continuidad')
     };
 
     const stateFor = value => value == null ? 'Sin datos' : value <= 2 ? 'Inicial' : value === 3 ? 'En marcha' : 'Consolidado';
@@ -62,9 +124,8 @@
       'que el profesorado pide más herramientas y formación',
       'que hay niños y niñas que no avanzan y no tenéis claro por qué',
       'que cada aula o cada etapa trabaja de forma distinta',
-      other.trim()
     ];
-    const concern = concernTexts[answerIndex(0)] || answerText(0);
+    const concern = concernTexts[answerIndex('preocupacion')] || answerText('preocupacion');
 
     const knownScores = Object.values(scores).filter(value => value != null);
     const average = knownScores.length
@@ -100,7 +161,7 @@
         if (scores.deteccion === 4) {
           return 'Las dificultades se detectan a tiempo y se sabe qué habilidad trabajar.';
         }
-        return answerIndex(5) === 1
+        return answerIndex('deteccion') === 1
           ? 'Vuestro equipo detecta las dificultades a tiempo, ya en Infantil. Esa detección temprana es una base valiosa, aunque todavía falte una mirada común.'
           : 'Vuestro equipo detecta las dificultades a tiempo, ya en Infantil, y las deriva para valorarlas.';
       });
@@ -119,7 +180,7 @@
         'En los últimos cursos no ha habido formación común: cada docente enseña con lo que trae de su formación inicial y su experiencia.',
         'El equipo se forma, pero por caminos distintos: conviven enfoques que no siempre se hablan entre sí.',
         'Hubo formación común, pero su aplicación quedó en manos de cada docente. Sin acuerdos ni acompañamiento, lo aprendido suele diluirse en pocos meses.',
-        'La formación se tradujo en acuerdos y tuvo seguimiento en el aula: es la base que permite sostener cambios.',
+        'La formación común tuvo acompañamiento o revisión en el aula: es una base valiosa para sostener los cambios.',
         noDataText
       ],
       criterios: [
@@ -151,20 +212,20 @@
         noDataText
       ],
       continuidad: [
-        '1º empieza de cero: se pierde lo construido en Infantil y se repite lo que algunos ya dominan.',
-        'El paso a 1º supone un cambio brusco en la forma de trabajar. Es habitual que niños que iban bien se desajusten en el primer trimestre.',
-        'Se retoma lo hecho, pero cada docente a su manera: la continuidad depende de quién reciba al grupo.',
-        '1º parte de lo que domina cada niño, con el mismo lenguaje que Infantil.',
+        '1º arranca con un repaso general marcado por el libro y pasa a la ficha: el punto de partida no se ajusta a lo que domina cada niño.',
+        'Se retoma lo trabajado en Infantil, pero cada docente decide cuánto y cómo: la continuidad depende de quién reciba al grupo.',
+        'Infantil comparte información del grupo y 1º la tiene en cuenta, aunque todavía falta un lenguaje común entre etapas.',
+        '1º parte de lo que domina cada niño, con información individual y un lenguaje compartido con Infantil.',
         noDataText
       ]
     };
-    const mapText = (area, questionIndex) => mapTexts[area][answerIndex(questionIndex)] || noDataText;
+    const mapText = (area, questionId) => mapTexts[area][answerIndex(questionId)] || noDataText;
 
     const crosses = [];
     const addCross = (condition, text, areas) => {
       if (condition && crosses.length < 3) crosses.push({ text, areas });
     };
-    const p1 = answerIndex(0);
+    const p1 = answerIndex('preocupacion');
     addCross(p1 === 4 && scores.criterios != null && scores.criterios <= 3,
       'Tu preocupación tiene una explicación en tus propias respuestas: no hay criterios comunes para alfabetizar de Infantil a Primaria. Mientras eso no exista, cada aula seguirá funcionando a su manera, por mucho compromiso que tenga el equipo.', ['criterios']);
     addCross(p1 === 3 && scores.ritmo != null && scores.ritmo <= 2,
@@ -184,7 +245,7 @@
       'La formación llegó, pero no se tradujo en acuerdos. El conocimiento ya está en el claustro; lo que falta es convertirlo en decisiones comunes.', ['formacion', 'criterios']);
     addCross(scores.criterios === 2 && scores.continuidad != null && scores.continuidad <= 3,
       'El libro ordena cada curso, pero no garantiza la continuidad. Si Infantil y Primaria trabajan con materiales de lógicas distintas, el recorrido se rompe en el paso de etapa.', ['criterios', 'continuidad']);
-    addCross(answerIndex(5) === 1 && scores.datos != null && scores.datos <= 2,
+    addCross(answerIndex('deteccion') === 1 && scores.datos != null && scores.datos <= 2,
       'Vuestro equipo ve cosas, pero no las registra con una referencia común: la información existe, pero se queda en cada aula y no llega a las decisiones del centro.', ['deteccion', 'datos']);
     addCross(scores.ritmo === 4 && scores.continuidad != null && scores.continuidad <= 2,
       'Hay una mirada de proceso, pero se rompe en el paso a 1º: lo que Infantil cuida, Primaria no siempre lo recoge.', ['ritmo', 'continuidad']);
@@ -323,22 +384,22 @@
       CIERRE_FORTALEZAS: strengths.length
         ? 'Es una base desde la que construir, no desde la que empezar.'
         : 'Es un punto de partida desde el que ordenar prioridades y tomar decisiones comunes.',
-      ANALISIS_FORMACION_AULA: mapText('formacion', 1),
+      ANALISIS_FORMACION_AULA: mapText('formacion', 'formacion'),
       ...pointFieldsFor('FORMACION', scores.formacion),
       ESTADO_FORMACION: stateFor(scores.formacion),
-      ANALISIS_CRITERIOS_COMUNES: mapText('criterios', 2),
+      ANALISIS_CRITERIOS_COMUNES: mapText('criterios', 'criterios'),
       ...pointFieldsFor('CRITERIOS', scores.criterios),
       ESTADO_CRITERIOS: stateFor(scores.criterios),
-      ANALISIS_RITMO_ALFABETIZACION: mapText('ritmo', 3),
+      ANALISIS_RITMO_ALFABETIZACION: mapText('ritmo', 'ritmo'),
       ...pointFieldsFor('RITMO', scores.ritmo),
       ESTADO_RITMO: stateFor(scores.ritmo),
-      ANALISIS_DATOS_PARA_DECIDIR: mapText('datos', 4),
+      ANALISIS_DATOS_PARA_DECIDIR: mapText('datos', 'datos'),
       ...pointFieldsFor('DATOS', scores.datos),
       ESTADO_DATOS: stateFor(scores.datos),
-      ANALISIS_DETECCION_TEMPRANA: mapText('deteccion', 5),
+      ANALISIS_DETECCION_TEMPRANA: mapText('deteccion', 'deteccion'),
       ...pointFieldsFor('DETECCION', scores.deteccion),
       ESTADO_DETECCION: stateFor(scores.deteccion),
-      ANALISIS_CONTINUIDAD_ENTRE_ETAPAS: mapText('continuidad', 6),
+      ANALISIS_CONTINUIDAD_ENTRE_ETAPAS: mapText('continuidad', 'continuidad'),
       ...pointFieldsFor('TRANSICION', scores.continuidad),
       ESTADO_TRANSICION: stateFor(scores.continuidad),
       HALLAZGO_INTEGRADO_1: integratedFindings[0],
@@ -352,13 +413,16 @@
       PREGUNTA_EXPLORACION_1: explorationQuestions[0],
       PREGUNTA_EXPLORACION_2: explorationQuestions[1],
       PREGUNTA_EXPLORACION_3: explorationQuestions[2],
-      RESPUESTA_PREOCUPACION_PRINCIPAL: answerText(0),
-      RESPUESTA_FORMACION_CLAUSTRO: answerText(1),
-      RESPUESTA_CRITERIOS_NUEVO_DOCENTE: answerText(2),
-      RESPUESTA_MOMENTO_LECTURA_AUTONOMA: answerText(3),
-      RESPUESTA_MEDICION_LECTURA_AUTONOMA: answerText(4),
-      RESPUESTA_DETECCION_DIFICULTADES: answerText(5),
-      RESPUESTA_CONTINUIDAD_ENTRE_ETAPAS: answerText(6)
+      RESPUESTA_PREOCUPACION_PRINCIPAL: answerText('preocupacion'),
+      RESPUESTA_FORMACION_CLAUSTRO: answerText('formacion'),
+      RESPUESTA_CRITERIOS_NUEVO_DOCENTE: answerText('criterios'),
+      RESPUESTA_MOMENTO_LECTURA_AUTONOMA: answerText('ritmo'),
+      RESPUESTA_TRABAJO_INFANTIL_5: answerText('infantil_5'),
+      RESPUESTA_CONTINUIDAD_ENTRE_ETAPAS: answerText('continuidad'),
+      RESPUESTA_DETECCION_DIFICULTADES: answerText('deteccion'),
+      RESPUESTA_MEDICION_LECTURA_AUTONOMA: answerText('datos'),
+      RESPUESTA_MEJORA_PRIORITARIA: answerText('mejora'),
+      RESPUESTA_PLAN_FORMACION: answerText('plan_formacion')
     };
 
     return {
@@ -392,7 +456,7 @@
         MOSTRAR_PREGUNTA_3: explorationQuestions.length > 2
       },
       META: {
-        VERSION_REGLAS: '2026-10-09',
+        VERSION_REGLAS: '2026-10-28',
         ORIGEN: 'cuestionario-lectoludica',
         FECHA_ENVIO: new Date().toISOString()
       }
@@ -437,6 +501,13 @@
     if (!template.includes(originalSubmit)) {
       throw new Error('No se encontró el envío original del cuestionario.');
     }
+
+    const questionsStart = template.indexOf('  get questions() { return [');
+    const questionsEnd = template.indexOf('  componentDidMount() {', questionsStart);
+    if (questionsStart === -1 || questionsEnd === -1) {
+      throw new Error('No se encontró el bloque original de preguntas.');
+    }
+    template = template.slice(0, questionsStart) + questionsLogic + template.slice(questionsEnd);
 
     let patched = template
       .replace(originalState, patchedState)
