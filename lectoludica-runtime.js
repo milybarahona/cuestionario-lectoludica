@@ -205,7 +205,7 @@
         noDataText
       ],
       deteccion: [
-        'Las dificultades se ven cuando el niño ya va por detrás. A esas alturas, recuperar cuesta más y la familia suele llegar preocupada.',
+        'Las dificultades se ven cuando el niño ya va por detrás. A esas alturas, recuperar le cuesta más esfuerzo.',
         'Las dificultades se ven ya en Infantil, y eso es una fortaleza. Qué se considera una señal de alerta varía de un aula a otra.',
         'Las dificultades se ven a tiempo y se derivan, pero sin saber qué habilidad trabajar en el aula: el apoyo tiende a ser genérico.',
         'Se detecta a tiempo y con precisión: se sabe qué habilidad trabajar.',
@@ -456,7 +456,7 @@
         MOSTRAR_PREGUNTA_3: explorationQuestions.length > 2
       },
       META: {
-        VERSION_REGLAS: '2026-10-29',
+        VERSION_REGLAS: '2026-10-29b',
         ORIGEN: 'cuestionario-lectoludica',
         FECHA_ENVIO: new Date().toISOString()
       }
