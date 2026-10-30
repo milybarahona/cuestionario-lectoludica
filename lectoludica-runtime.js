@@ -325,6 +325,102 @@
     };
     const priority = priorities[priorityArea];
 
+    const fixedBlocks = {
+      formacion: {
+        intro: '¿Por qué organizar otra formación no suele ser suficiente? Una formación puntual, por buena que sea, se diluye cuando cada docente vuelve a su aula y la aplica desde su propia práctica. El claustro suma horas de formación, pero lo que pasa en el aula cambia poco.',
+        bullets: [
+          'Una formación común centrada en cómo progresa la alfabetización, no en actividades sueltas.',
+          'Que esa formación termine en acuerdos concretos de aula: qué se trabaja, en qué orden y cómo se observa.',
+          'Material de referencia que el equipo pueda consultar después, para que lo aprendido no dependa de la memoria de cada docente.',
+          'Seguimiento durante el curso, para ajustar en el aula lo que en la formación parecía claro.'
+        ],
+        idea: 'que la formación recibida no se convierte en práctica compartida de aula',
+        keywords: 'formación común, acuerdos concretos de aula, material de referencia, seguimiento durante el curso'
+      },
+      criterios: {
+        intro: '¿Por qué una reunión de etapa no suele ser suficiente? Los acuerdos que se toman sin una base común acaban interpretándose desde la formación de cada docente. El acuerdo existe en el papel, pero en el aula vuelve a depender de cada tutora.',
+        bullets: [
+          'Una formación común del claustro sobre cómo progresa la alfabetización, de Infantil a Primaria.',
+          'Una secuencia y un material de referencia compartidos, para que todo el equipo sepa qué se trabaja y en qué orden.',
+          'Herramientas de observación comunes, para que «no asocia sonidos y letras» signifique lo mismo en todas las aulas.',
+          'Acompañamiento durante la puesta en práctica, porque lo que cambia el aula es lo que se sostiene en el tiempo, no la formación de un día.'
+        ],
+        idea: 'que no hay criterios compartidos sobre qué enseñar, en qué orden y cómo observarlo',
+        keywords: 'formación común del claustro, secuencia y material de referencia compartidos, herramientas de observación comunes, acompañamiento en la puesta en práctica'
+      },
+      ritmo: {
+        intro: '¿Por qué cambiar la fecha no suele ser suficiente? Mover la expectativa de lectura un trimestre antes o después no cambia nada si el equipo no sabe qué tiene que estar consolidado antes de leer. Sin esa referencia, adelantar genera presión y esperar genera retrasos.',
+        bullets: [
+          'Una referencia común de las habilidades que sostienen la lectura y del momento en que es esperable cada una.',
+          'Trabajo sistemático de esas habilidades en Infantil, para que la lectura llegue cuando hay base y no cuando lo marca el calendario.',
+          'Formas sencillas de ver en qué punto está cada niño, para distinguir un ritmo distinto de una dificultad.',
+          'Un mensaje común para las familias sobre cuándo y cómo se espera que sus hijos lean.'
+        ],
+        idea: 'distinguir un ritmo distinto de una dificultad real',
+        keywords: 'referencia común de habilidades, trabajo sistemático en Infantil, ver en qué punto está cada niño, mensaje común para las familias'
+      },
+      datos: {
+        intro: '¿Por qué pasar una prueba no suele ser suficiente? Una prueba aislada da un número, pero no dice qué hacer con él. Si el equipo no comparte qué mide ni cómo leerlo, el dato acaba en un informe y las decisiones se siguen tomando por impresión.',
+        bullets: [
+          'Acordar qué indicadores de lectura importan en cada momento, de Infantil 5 a 2º.',
+          'Unas pocas observaciones sencillas y comunes en momentos fijos del curso, no una batería de pruebas.',
+          'Un registro compartido que acompañe al alumno de un curso a otro.',
+          'Espacios del equipo para leer esos datos juntos y decidir apoyos, agrupamientos y prioridades.'
+        ],
+        idea: 'que el centro decide sin un dato común y a tiempo sobre cómo avanza la lectura',
+        keywords: 'indicadores de lectura, observaciones en momentos fijos, registro compartido, espacios del equipo para leer los datos'
+      },
+      deteccion: {
+        intro: '¿Por qué derivar antes no suele ser suficiente? Orientación no puede valorar a todos los niños que despiertan una duda, y la mayoría de las señales tempranas no piden una derivación, sino una respuesta en el aula. Si el aula no sabe qué observar ni qué trabajar, la detección sigue llegando tarde o se queda en una derivación sin contexto.',
+        bullets: [
+          'Señales comunes: todo el equipo de Infantil y 1º sabe qué observar y cuándo es esperable cada cosa.',
+          'Un registro sencillo de lo observado, que no dependa de la memoria de quien lo vio.',
+          'Trabajo preventivo en el aula sobre las habilidades que todavía no están consolidadas, antes de pensar en derivar.',
+          'Una ruta de derivación clara: cuándo se consulta a orientación, con qué información y quién informa a la familia.'
+        ],
+        idea: 'que las dificultades se ven tarde o sin una respuesta concreta en el aula',
+        keywords: 'señales comunes, qué observar, registro de lo observado, trabajo preventivo, ruta de derivación'
+      },
+      continuidad: {
+        intro: '¿Por qué una reunión de traspaso en junio no suele ser suficiente? En una reunión de final de curso se habla de los casos que más preocupan, y la información sobre el resto se pierde. Y si Infantil y 1º no comparten cómo se enseña a leer, aunque la información llegue, la tutora de 1º no sabe desde dónde retomar.',
+        bullets: [
+          'Una secuencia de alfabetización que vaya de Infantil a Primaria, para que 1º continúe y no empiece de nuevo.',
+          'Un lenguaje común entre etapas: que «lee de forma autónoma» o «asocia sonidos y letras» signifique lo mismo para las dos tutoras.',
+          'Un registro breve por alumno que pase con él de etapa.',
+          'Una transición planificada en la forma de trabajar, para que el paso del juego y la manipulación a la ficha y el libro no sea brusco.'
+        ],
+        idea: 'que el paso de Infantil a 1º no parte de lo que cada niño ya domina',
+        keywords: 'secuencia de Infantil a Primaria, lenguaje común entre etapas, registro breve por alumno, transición planificada'
+      }
+    };
+    const fixedBlock = fixedBlocks[priorityArea] || null;
+    const detectionAnswer = answerIndex('deteccion');
+    let detectionVariant = '';
+    if (priorityArea === 'deteccion') {
+      if (detectionAnswer === 0) {
+        detectionVariant = 'En vuestro caso, las dificultades aparecen cuando el alumno ya va por detrás. Lo que falta es mirar antes, y con las mismas señales en todo el equipo.';
+      } else if (detectionAnswer >= 1 && detectionAnswer <= 3) {
+        detectionVariant = 'En vuestro caso, el equipo ya detecta en Infantil. Lo que falta es que esa detección se convierta en una respuesta concreta en el aula.';
+      }
+    }
+    const fixedFoundation = fixedBlock
+      ? [fixedBlock.intro].concat(detectionVariant ? [detectionVariant] : []).concat(fixedBlock.bullets.map(item => '- ' + item)).join('\n')
+      : priority.foundation;
+
+    const p5 = answerIndex('infantil_5');
+    const earlyLetters = p5 === 0 || p5 === 1;
+    const structuredBase = p5 === 2 || p5 === 3;
+    const earlyReading = answerIndex('ritmo') === 0 || answerIndex('ritmo') === 1;
+    const firstGradeFromScratch = answerIndex('continuidad') === 0 || answerIndex('continuidad') === 1;
+    const firstGradeBuildsOn = answerIndex('continuidad') === 3;
+    const lateOrLooseTracking = detectionAnswer === 0 || answerIndex('datos') === 0 || answerIndex('datos') === 1;
+    const p5Guidance = [];
+    if (earlyLetters && earlyReading) p5Guidance.push('El foco de Infantil 5 en letras, fichas o palabras coincide con una expectativa de lectura temprana: plantea con cautela si la secuencia prioriza la rapidez sobre la consolidación de las bases, sin afirmar que esas bases falten.');
+    if (earlyLetters && firstGradeFromScratch) p5Guidance.push('Ese foco de Infantil 5 se combina con un inicio de 1º desde el libro o según cada docente: puedes señalar el riesgo de que una secuencia poco explícita no tenga continuidad suficiente al pasar a Primaria.');
+    if (structuredBase && firstGradeBuildsOn) p5Guidance.push('Infantil 5 trabaja el lenguaje oral, los sonidos o una secuencia planificada y 1º parte de lo trabajado con criterios compartidos: puede reconocerse una trayectoria potencialmente coherente, sin presentarla como garantía de resultados.');
+    if (structuredBase && firstGradeFromScratch) p5Guidance.push('Infantil 5 tiene una preparación estructurada, pero 1º empieza desde el libro o según cada docente: puedes señalar que lo trabajado podría no aprovecharse plenamente.');
+    if (earlyLetters && lateOrLooseTracking) p5Guidance.push('El foco temprano en letras, fichas o palabras coincide con una detección tardía o un seguimiento poco compartido: puedes abrir una pregunta sobre cómo se revisa la secuencia y cómo se identifican señales tempranas, sin atribuir causalidad.');
+
     const questionByArea = {
       criterios: '¿Qué orden de letras sigue hoy cada tutor o tutora de Infantil 5 y de 1º? ¿Quién lo decidió y cuándo?',
       ritmo: '¿De dónde viene la expectativa sobre cuándo deben leer: del equipo, del libro, de las familias?',
@@ -422,7 +518,12 @@
       RESPUESTA_DETECCION_DIFICULTADES: answerText('deteccion'),
       RESPUESTA_MEDICION_LECTURA_AUTONOMA: answerText('datos'),
       RESPUESTA_MEJORA_PRIORITARIA: answerText('mejora'),
-      RESPUESTA_PLAN_FORMACION: answerText('plan_formacion')
+      RESPUESTA_PLAN_FORMACION: answerText('plan_formacion'),
+      INTRO_FIJA: 'Este informe se elaboró con las respuestas que compartisteis con Lectolúdica y parte de lo que más os preocupa: ' + concern + '.',
+      FUNDAMENTO_FIJO: fixedFoundation,
+      IDEA_PRIORIDAD: fixedBlock ? fixedBlock.idea : '',
+      PALABRAS_RESERVADAS: fixedBlock ? fixedBlock.keywords : '',
+      ORIENTACION_P5: p5Guidance.join(' ')
     };
 
     return {
@@ -456,7 +557,7 @@
         MOSTRAR_PREGUNTA_3: explorationQuestions.length > 2
       },
       META: {
-        VERSION_REGLAS: '2026-10-29b',
+        VERSION_REGLAS: '2026-10-30',
         ORIGEN: 'cuestionario-lectoludica',
         FECHA_ENVIO: new Date().toISOString()
       }
