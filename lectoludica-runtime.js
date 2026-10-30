@@ -14,12 +14,13 @@
   };`;
 
   const questionsLogic = String.raw`  get questions() { return [
-    { id: 'preocupacion', text: '¿Qué es lo que más te preocupa hoy en lectoescritura?', hint: 'Elige una.', options: [
+    { id: 'preocupacion', text: '¿Qué es lo que más te preocupa hoy en lectoescritura?', hint: 'Elige una.', otherIdx: 5, options: [
       'Los resultados en las evaluaciones externas.',
       'Las familias: dudas, quejas o presión.',
       'Que el profesorado pide más herramientas y formación.',
       'Niños y niñas que no avanzan y no tenemos claro por qué.',
-      'Que cada aula o cada etapa trabaja de forma distinta.'] },
+      'Que cada aula o cada etapa trabaja de forma distinta.',
+      'Otra cosa (respuesta corta, opcional).'] },
     { id: 'formacion', text: '¿Cómo ha sido la formación en lectoescritura del claustro en los últimos cursos?', options: [
       'No ha habido formación de lectoescritura.',
       'Cada docente se forma por su cuenta, y no siempre en lo mismo.',
@@ -125,7 +126,11 @@
       'que hay niños y niñas que no avanzan y no tenéis claro por qué',
       'que cada aula o cada etapa trabaja de forma distinta',
     ];
-    const concern = concernTexts[answerIndex('preocupacion')] || answerText('preocupacion');
+    const concernIndex = answerIndex('preocupacion');
+    const otherConcern = (other || '').trim().replace(/\s+/g, ' ');
+    const concern = concernIndex === 5
+      ? otherConcern
+      : (concernTexts[concernIndex] || answerText('preocupacion'));
 
     const knownScores = Object.values(scores).filter(value => value != null);
     const average = knownScores.length
@@ -509,7 +514,9 @@
       PREGUNTA_EXPLORACION_1: explorationQuestions[0],
       PREGUNTA_EXPLORACION_2: explorationQuestions[1],
       PREGUNTA_EXPLORACION_3: explorationQuestions[2],
-      RESPUESTA_PREOCUPACION_PRINCIPAL: answerText('preocupacion'),
+      RESPUESTA_PREOCUPACION_PRINCIPAL: concernIndex === 5
+        ? (otherConcern ? 'Otra cosa: ' + otherConcern : 'Otra cosa (sin especificar).')
+        : answerText('preocupacion'),
       RESPUESTA_FORMACION_CLAUSTRO: answerText('formacion'),
       RESPUESTA_CRITERIOS_NUEVO_DOCENTE: answerText('criterios'),
       RESPUESTA_MOMENTO_LECTURA_AUTONOMA: answerText('ritmo'),
@@ -556,7 +563,7 @@
         MOSTRAR_PREGUNTA_3: explorationQuestions.length > 2
       },
       META: {
-        VERSION_REGLAS: '2026-10-30',
+        VERSION_REGLAS: '2026-10-30b',
         ORIGEN: 'cuestionario-lectoludica',
         FECHA_ENVIO: new Date().toISOString()
       }
