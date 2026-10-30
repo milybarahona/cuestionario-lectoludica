@@ -519,9 +519,6 @@
       RESPUESTA_MEDICION_LECTURA_AUTONOMA: answerText('datos'),
       RESPUESTA_MEJORA_PRIORITARIA: answerText('mejora'),
       RESPUESTA_PLAN_FORMACION: answerText('plan_formacion'),
-      INTRO_FIJA: concern
-        ? 'Este informe se elaboró con las respuestas que compartisteis con Lectolúdica y parte de lo que más os preocupa: ' + concern + '.'
-        : 'Este informe se elaboró con las respuestas que compartisteis con Lectolúdica.',
       FUNDAMENTO_FIJO: fixedFoundation,
       IDEA_PRIORIDAD: fixedBlock ? fixedBlock.idea : '',
       PALABRAS_RESERVADAS: fixedBlock ? fixedBlock.keywords : '',
